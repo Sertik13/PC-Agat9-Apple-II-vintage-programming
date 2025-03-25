@@ -7,7 +7,7 @@ Descriptions, documents, source code of programs will be posted here, including 
 
 В том числе:
 
--relocatable file customizer for DOS 3.3 AGAT-9 (настройщик перемещаемых файлов для DOS 3.3 АГАТ-9)
+- relocatable file customizer for DOS 3.3 AGAT-9 (настройщик перемещаемых файлов для DOS 3.3 АГАТ-9)
 
 - virtual disk driver for DOS 3.3 AGAT-9 (драйвер виртуального диска для DOS 3.3 AГАТ-9)
 
