@@ -1,4 +1,4 @@
-# PC-Agat9-Apple-II-vintage-programming
+# PC-Agat9-Apple-II-vintage-programming. American Apple and Russian Stone
 Collection of descriptions, source codes and programs for PC Agat-9 and Apple II
 
 Descriptions, documents, source code of programs will be posted here, including those that have not been previously published and were written by me in 1990-1995. Some documents were created later in our time.
