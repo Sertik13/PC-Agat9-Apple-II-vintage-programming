@@ -1,0 +1,69 @@
+
+
+ LST ON
+
+*--------------------------------*
+* <C> Friends' software 1995     *
+* СТАРТОВЫЙ ФАЙЛ СБОРКИ ДРАЙВЕРА *
+* СИСТЕМЫ под BASIC 'MASTER'95   *
+*--------------------------------*
+
+ LST OFF
+
+
+ CHN ALLDEFIN.ASM  ; файл общих меток
+
+
+ATRIBDR    EQU :00100110 ; константа сборки драйвера
+
+    DO ATRIBDR&:00010000
+
+    REL
+
+    FIN
+
+           ORG $4000
+
+           DFB @44
+           DFB ATRIBDR   ; главный атрибут драйвера
+           DFB $2C                            
+BEGDRIVE   DW AREA       ; адрес поля точек входа в
+;                        ; обработчик драйвера
+           DFB $2C
+INITDR     DW 0          ; адрес программы инициализации
+           DFB $2C
+TEXTHELP   DW 0          ; адрес заставки драйвера
+           DFB @44
+           DFB 1         ; уникальный номер драйвера
+
+ CHN SETDRMOD.ASM  ; модуль установки драйвера
+ CHN AREAMODL.ASM  ; поле точек входа в интерпретатор
+ CHN INTBAS95.ASM  ; интерпретатор драйвера
+ CHN ALLSUBRS.ASM  ; общие подпрограммы  
+
+*----------------
+NEXTOPER
+*----------------
+
+ CHN PAL.OPER.ASM  ; оператор "PAL"
+ CHN HEXFUNCT.ASM  ; функция  "HEX"
+ CHN WINMODL2.ASM  ; "оконный" модуль
+ CHN FILESFUN.ASM  ; функция "FILES"
+ CHN RLINEMOD.ASM  ; оператор "бегущая строка"
+ CHN BIT_TEST.ASM  ; функция "BIT_TEST"
+ CHN DEFNSLOT.ASM  ; функция "DEFSLOT"
+ CHN NCCMODUL.ASM  ; модуль работы с ячейкой часов
+ CHN CLOCKDRV.ASM  ; драйвер часов Голова А.
+ CHN BELLOPER.ASM  ; процедура "BELL"
+ CHN SOUNDOPR.ASM  ; процедура "SOUND"
+ CHN MUZMODUL.ASM  ; "музыкальный" модуль
+ CHN TABL.OPR.ASM  ; построение таблиц
+ CHN BUF2.OPR.ASM  ; буфер
+ CHN RESETOPR.ASM  ; процедура "сброс на RUN"
+ CHN TURBOOPR.ASM  ; быстрый вывод на экран
+ CHN PRGRFMOD.ASM  ; печать
+*CHN SAYMODUL.ASM  ; "говорящая строка"
+
+ CHN ERRORMOD.ASM
+
+;END
