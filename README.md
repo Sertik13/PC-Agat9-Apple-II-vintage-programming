@@ -12,6 +12,7 @@ Descriptions, documents, source code of programs will be posted here, including 
 - virtual disk driver for DOS 3.3 AGAT-9 (драйвер виртуального диска для DOS 3.3 AГАТ-9)
 
 - Basic Master`95 system for AGAT-9 (система Basic Master`95 для АГАТ-9)
-  
-      a system of extensions to the BASIC interpreter with support functions (which even Steve Wozniak's Basic AppleSoft didn't have)
-      система расширения возможностей интерпретатора Бейсик с поддержкой функций ! (чего не было даже у Стива Возняка в Basic AppleSoft)
+
+      a system for extending the capabilities of the BASIC interpreter through the ampersand (&) keyword with support for the ! functions (which even Steve Wozniak did not have in AppleSoft's Basic)
+      система расширения возможностей интерпретатора Бейсик через ключевое слово амперсанд (&) с поддержкой функций ! (чего не было даже у Стива Возняка в Basic AppleSoft)
+     
