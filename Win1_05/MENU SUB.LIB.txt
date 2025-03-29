@@ -1,0 +1,102 @@
+
+REM *==================================*
+REM * Подпрограмма универсального меню *
+REM * -------------------------------- *
+REM * авторы: Волков И.М., Серков С.В. *
+REM * для работы требуется драйвер     *
+REM * поддержки окон WIN 1.04.EXE      *
+REM *==================================*
+
+REM Входные параметры и диапазоны их значений:
+REM ---------------------------------
+REM  1. NMENU [1,2,3] - тип меню
+REM     - NMENU=1 - меню в режиме АЦР32
+REM     - NMENU=2 - меню "вертикальная рамка" в АЦР32/64
+REM     - NMENU=3 - меню "горизонтальная рамка" в АЦР 32/64
+REM  2. VT - левая граница окна по вертикали
+REM  3. HT - левая граница окна по горизонтали
+REM  4. XL - ширина окна
+REM  5. YL - длина окна (для меню 2 рассчитывается по MAX)
+REM  6. ZAGL$ - имя заголовка окна
+REM  7. COLORW - цвет окна
+REM  8. COLORP - цвет пунктов окна
+REM  9. COLORR - цвет рамки меню
+REM 10. COLORZ - цвет заголовка меню
+REM 11. COLORG - цвет выбранного пункта
+REM 12. MAX - количество пунктов в меню
+REM 13. PUN$(MAX) - массив с именами пунктов
+
+REM Выходные параметры:
+REM ----------------------------------
+REM  - входные параметры без изменений
+REM  1. PUNKT - номер выбранного пункта (PUNKT=0, если
+REM             из меню был выход по клавише "РЕД")
+REM  2. PUN$(PUNKT) - имя выбранного пункта
+
+2  ON NMENU GOTO 10,100,300
+
+REM MENU NUMBER 1
+
+5  N%=PEEK($C000):IF N%<128 THEN 5
+6  POKE $C010,0:RETURN
+7  &"OWIN"VT,HT,XL,YL,TYPE,COLORW:RETURN
+8  VTAB VT:HTAB (XL-LEN(ZAGL$))/2+1:INVERSE:RIBBON=COLORZ:       PRINT ZAGL$:NORMAL:RETURN
+
+10 TYPE=1:GOSUB 7:GOSUB 8
+21 M=1:V=VT:GOSUB 80
+30 HTAB 1:VTAB V+2:INVERSE:RIBBON=COLORR:PRINT PUN$(M);
+31 HTAB 1
+40 NORMAL:RIBBON=COLORP:GOSUB 5:POKE 34,VT+1:POKE 35,VT+YL-1
+
+50 IF N%=$8D THEN INVERSE:RIBBON=COLORG:?PUN$(M);:NORMAL:        PUNKT=M:RETURN
+52 IF N%=$9B THEN PUNKT=0:&"CWIN":RETURN
+55 IF N%=153 THEN 60
+56 IF N%=154 THEN 70
+59 GOTO 30
+
+60 PRINT PUN$(M);:IF V>VT THEN V=V-1:M=M-1:GOTO 30
+62 IF M=1 THEN M=MAX-(YL-3):GOSUB 80:M=MAX:V=VT+YL-3:GOTO 30
+65 &"WDN":M=M-1:GOTO 30
+
+70 PRINT PUN$(M);:IF M=MAX THEN 21
+71 M=M+1:IF V<VT+YL-3 THEN V=V+1:GOTO 30
+72 &"WUP":GOTO 30
+
+80 RIBBON=COLORP:FOR I=M TO M+YL-3:VTAB VT+I-M+2:HTAB 1:         PRINT PUN$(I);:NEXT:RETURN
+
+REM MENU NUMBER 2
+
+100 TYPE=2:YL=MAX*2+3:GOSUB 7
+110 PLUS%=1
+120 HTAB HT+(XL-LEN(ZAGL$))/2+1:VTAB VT+PLUS%:RIBBON=COLORZ:      PRINT ZAGL$
+130 VTAB VT+PLUS%+1:HTAB HT+1:FOR I=HT+1 TO HT+XL:PRINT"-";:      NEXT:NORMAL
+150 FOR I=1 TO MAX:VTAB VT+PLUS%+1+I*2:HTAB HT+2:                 RIBBON=COLORP:PRINT PUN$(I):NEXT
+160 YL1=VT+PLUS%+2:XL1=HT+1
+170 &"RAM"YL1,XL1,XL-2,1,1,COLORR
+180 GOSUB 5
+
+190 IF N%=153 THEN &"RAM"YL1,XL1,XL-2,1,0:YL1=YL1-2
+200 IF N%=154 THEN &"RAM"YL1,XL1,XL-2,1,0:YL1=YL1+2
+210 IF YL1>VT+PLUS%+2+(MAX-1)*2 THEN YL1=VT+PLUS%+2
+220 IF YL1<VT+PLUS%+2 THEN YL1=VT+PLUS%+2+(MAX-1)*2
+230 IF N%=$8D THEN PUNKT=(YL1-VT-PLUS%-2)/2+1:                    &"RAM"YL1,XL1,XL-2,1,1,COLORG:RETURN
+240 IF N%=$9B THEN PUNKT=0:&"CWIN":RETURN
+250 GOTO 170
+
+REM MENU NUMBER 3
+
+299 &"RAM"VT+1,HT1,XL1,1,0:RETURN
+300 TYPE=3:YL=3:XL=0:FOR I=1 TO MAX:XL=XL+LEN(PUN$(I))+2:         NEXT:GOSUB 7
+305 XL1=2:GOSUB 8
+310 RIBBON=COLORP:FOR I=1 TO MAX:VTAB VT+2:HTAB XL1:                 PRINT PUN$(I);:XL1=XL1+LEN(PUN$(I))+2:NEXT
+320 HT1=1:M=1
+325 XL1=LEN(PUN$(M))
+330 &"RAM"VT+1,HT1,XL1,1,1,COLORR
+340 GOSUB 5
+350 IF N%=$95 THEN GOSUB 299:HT1=HT1+LEN(PUN$(M))+2:M=M+1
+360 IF N%=$88 THEN GOSUB 299:HT1=HT1-LEN(PUN$(M-1))-2:M=M-1
+370 IF HT1>XL-(LEN(PUN$(MAX))-2) THEN 320
+380 IF HT1<1 THEN HT1=XL-LEN(PUN$(MAX))-1:M=MAX:GOTO 325
+390 IF N%=$8D THEN PUNKT=M:&"RAM"VT+1,HT1,XL1,1,1,COLORG:         RETURN
+395 IF N%=$9B THEN PUNKT=0:&"CWIN":RETURN
+400 GOTO 325
