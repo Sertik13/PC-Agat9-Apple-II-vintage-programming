@@ -2,17 +2,17 @@
 *======================================*
 *   <C> Friends' software 1995         *
 *   ---------------------------        *
-*   МОДУЛЬ ФОРМАТИРОВАНИЯ ДИСКА        *
+*   РњРћР”РЈР›Р¬ Р¤РћР РњРђРўРР РћР’РђРќРРЇ Р”РРЎРљРђ        *
 *   ---------------------------        *
 * by Luzganov V.B. and Serkov S.V.     *
 * used programs text by Ilya M. Wolkov *
-* только для дисководов типа FD55.F    *
-* должен располагаться до $8000        *
+* С‚РѕР»СЊРєРѕ РґР»СЏ РґРёСЃРєРѕРІРѕРґРѕРІ С‚РёРїР° FD55.F    *
+* РґРѕР»Р¶РµРЅ СЂР°СЃРїРѕР»Р°РіР°С‚СЊСЃСЏ РґРѕ $8000        *
 *======================================*
 
 
 *---------------------------------*
-* оператор "FORMFAST"             *
+* РѕРїРµСЂР°С‚РѕСЂ "FORMFAST"             *
 *---------------------------------*
            
 FORMFAST  DFB 0
@@ -44,14 +44,14 @@ FFAST     JSR F.PAR
           LDA #$60
           STA $9EE3
           STA $C100,Y
-          JSR F.CHK       проверка на FD55.F
+          JSR F.CHK       РїСЂРѕРІРµСЂРєР° РЅР° FD55.F
           JSR SWALBS      SWITCH ALL BANKS          
           STA $C088
           JSR FMLIST
           STA $CA
           STY $C9
           LDY #0 
-          LDA #$B          код INIT
+          LDA #$B          РєРѕРґ INIT
           STA ($C9),Y
           LDA #1
           STA SFN.16
@@ -87,16 +87,16 @@ FFEXIT    JSR F.SYSVRF
   
 F.SYSVRF  LDY $C140
           STY $C148
-F.SYSVD   LDA#$A2         модификация
+F.SYSVD   LDA#$A2         РјРѕРґРёС„РёРєР°С†РёСЏ
           STA $9EE3
           STA $C100,Y
           RTS
 
-FFASTER1  JMP F.ERWP        диск защищен
+FFASTER1  JMP F.ERWP        РґРёСЃРє Р·Р°С‰РёС‰РµРЅ
 
-FFASTER2  JMP F.INOT        ошибка обмена
+FFASTER2  JMP F.INOT        РѕС€РёР±РєР° РѕР±РјРµРЅР°
 
-FFASTER3  LDA#>S4           нет устройства
+FFASTER3  LDA#>S4           РЅРµС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР°
           LDY#<S4
           JMP F.ALER
 
@@ -129,16 +129,16 @@ FFAST3    LDA $44
           CLC
           LDA #0         ERRKOD=0 O'KEY
           
-FFAST16   PHP            запомнить C     
-          PHA            запомнить A  (ERRKOD)
+FFAST16   PHP            Р·Р°РїРѕРјРЅРёС‚СЊ C     
+          PHA            Р·Р°РїРѕРјРЅРёС‚СЊ A  (ERRKOD)
 
-FFAST2    LDA #$00       восстановить $D45
+FFAST2    LDA #$00       РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ $D45
           STA DCTWAIT
-          JSR FFAST17    восстановить вектора DOSFORMAT
+          JSR FFAST17    РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ РІРµРєС‚РѕСЂР° DOSFORMAT
           
           PLA
           PLP
-          RTS             конец форматирования
+          RTS             РєРѕРЅРµС† С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёСЏ
 
 FFAST4    LDA #$AA
           STA $C085,X
@@ -247,7 +247,7 @@ FFTREKEX  DFB $A0
 
 
 *--------------------*
-* оператор "FORMVOL" *
+* РѕРїРµСЂР°С‚РѕСЂ "FORMVOL" *
 *--------------------*
 
 FORMVOL DFB 0
@@ -283,10 +283,10 @@ E.MASK  DFB $E4,$E4,$E4,$D8
 E.VLM   DFB $2A,$52,$7A,$9F
 MASK    DFB $FF,$FF,$F8,$00
 
-S1      DCI"ОШИБКА ОБМЕНА"
-S3      DCI"ОШИБКА ВЫБОРА УСТРОЙСТВА"
-S4      DCI"НЕТ УСТРОЙСТВА"
-S5      DCI"ДИСК ЗАЩИЩЕН"
+S1      DCI"РћРЁРР‘РљРђ РћР‘РњР•РќРђ"
+S3      DCI"РћРЁРР‘РљРђ Р’Р«Р‘РћР Рђ РЈРЎРўР РћР™РЎРўР’Рђ"
+S4      DCI"РќР•Рў РЈРЎРўР РћР™РЎРўР’Рђ"
+S5      DCI"Р”РРЎРљ Р—РђР©РР©Р•Рќ"
 
 FRMT.E0 JSR F.INIT
         JSR SETRD
@@ -333,9 +333,9 @@ FRM0    JSR F.NUL
         JSR $C0C
 FRM1    LDA $44
         JSR $C0C
-FRM11   JSR SETWRT    ВКЛЮЧЕНИЕ ЗАПИСИ
+FRM11   JSR SETWRT    Р’РљР›Р®Р§Р•РќРР• Р—РђРџРРЎР
         JSR $E47D     WRITRACK
-        JSR SETRD   ВКЛЮЧЕНИЕ ЧТЕНИЯ
+        JSR SETRD   Р’РљР›Р®Р§Р•РќРР• Р§РўР•РќРРЇ
         JSR $E4E7     TESTRACK
         BCC FRM2
         INC REE
@@ -453,7 +453,7 @@ MAKECAT JSR F.NUL
         STA ($3E),Y
 MC1     JSR F.RWTS
         INC RWSECT
-        INC $B973   ССЫЛКА НА СЛЕД. СЕКТ. КАТАЛОГА
+        INC $B973   РЎРЎР«Р›РљРђ РќРђ РЎР›Р•Р”. РЎР•РљРў. РљРђРўРђР›РћР“Рђ
         LDA RWSECT
         CMP #$13
         BNE MC1
@@ -482,7 +482,7 @@ RWT1    RTS
 F.INIT  LDX RWSLOT
         LDA #$92
         STA $C083,X
-        LDA #$BD        ВКЛЮЧЕНИЕ ДИСКОВОДА
+        LDA #$BD        Р’РљР›Р®Р§Р•РќРР• Р”РРЎРљРћР’РћР”Рђ
         STA $C087,X
         LDA RWDRV
         LSR A
@@ -535,7 +535,7 @@ SETWRT  LDA #8
         RTS
     
 *=============================================*
-* Общие подпрограммы для операторов FORMATMOD *
+* РћР±С‰РёРµ РїРѕРґРїСЂРѕРіСЂР°РјРјС‹ РґР»СЏ РѕРїРµСЂР°С‚РѕСЂРѕРІ FORMATMOD *
 *=============================================*
 
 F.BNKSV LDA $C144  
@@ -553,31 +553,31 @@ SWALBS  STA $C15D
         STA $C179
         RTS 
         
-F.PAR   JSR CH.PARH     проверить старшие байты параметров
+F.PAR   JSR CH.PARH     РїСЂРѕРІРµСЂРёС‚СЊ СЃС‚Р°СЂС€РёРµ Р±Р°Р№С‚С‹ РїР°СЂР°РјРµС‚СЂРѕРІ
         LDX XBUF1       SLOT
         CPX #1
-        BCS F.PAR1      SLOT был дан
+        BCS F.PAR1      SLOT Р±С‹Р» РґР°РЅ
         LDA RWSLOT
         STA BUF1
         BNE F.PAR2     (JMP)
 F.PAR1  LDA BUF1
         CMP #2
-        BCC F.PARER - ошибочное значение
+        BCC F.PARER - РѕС€РёР±РѕС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
         CMP #7
-        BCS F.PARER - ошибочное значение
+        BCS F.PARER - РѕС€РёР±РѕС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
         ASL BUF1
         ASL BUF1
         ASL BUF1
         ASL BUF1
 F.PAR2  CPX #2          DRIVE
-        BCS F.PAR3      DRIVE был дан
+        BCS F.PAR3      DRIVE Р±С‹Р» РґР°РЅ
         LDA RWDRV
         STA BUF1+1
         BNE F.PAR4      (JMP)
 F.PAR3  LDA BUF1+1
-        BEQ F.PARER - ошибочное значение
+        BEQ F.PARER - РѕС€РёР±РѕС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
         CMP#3
-        BCS F.PARER - ошибочное значение
+        BCS F.PARER - РѕС€РёР±РѕС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
 F.PAR4  CPX #3          VOLUME
         BCS F.PAR5 
         LDA RWTOM
@@ -585,14 +585,14 @@ F.PAR4  CPX #3          VOLUME
 F.PAR5  RTS
 F.PARER JMP BASERR46
 
-F.RWMV  LDX #1         записать SLOT и DRIVE 
-        LDA BUF1,X     в $558 и $559
+F.RWMV  LDX #1         Р·Р°РїРёСЃР°С‚СЊ SLOT Рё DRIVE 
+        LDA BUF1,X     РІ $558 Рё $559
         STA RWSLOT,X
         DEX
         BPL F.RWMV+2
         RTS
 
-F.CHK   LDA RWSLOT     проверка на TEAK
+F.CHK   LDA RWSLOT     РїСЂРѕРІРµСЂРєР° РЅР° TEAK
         LSR A          ----------------
         LSR A
         LSR A
@@ -602,11 +602,11 @@ F.CHK   LDA RWSLOT     проверка на TEAK
 F.CHK1  LDA $C00C
         CMP #$BD
         BEQ F.CHK2
-ERAP    LDA #<S3       это не TEAK
+ERAP    LDA #<S3       СЌС‚Рѕ РЅРµ TEAK
         LDY #>S3 
         JMP F.ALER
 
-F.CHK2  JSR F.INIT     проверка на привод
+F.CHK2  JSR F.INIT     РїСЂРѕРІРµСЂРєР° РЅР° РїСЂРёРІРѕРґ
         JSR SETRD      ------------------
         LDA $C081,X
         LDY RWDRV
@@ -614,11 +614,11 @@ F.CHK2  JSR F.INIT     проверка на привод
         BEQ F.CHK3
         AND #12
         BEQ F.CHK4
-        BNE ERAP       ошибка выбора устройства
+        BNE ERAP       РѕС€РёР±РєР° РІС‹Р±РѕСЂР° СѓСЃС‚СЂРѕР№СЃС‚РІР°
 F.CHK3  AND #3 
         BNE ERAP 
 
-F.CHK4  LDA #0         проверка на сигнал READY
+F.CHK4  LDA #0         РїСЂРѕРІРµСЂРєР° РЅР° СЃРёРіРЅР°Р» READY
         STA $4E        ------------------------
         STA $4F
         LDX RWSLOT
@@ -628,20 +628,20 @@ F.CHK6  LDA $C081,X
         BNE F.CHK6
         DEC $4F
         BNE F.CHK6
-        BEQ F.INOUT    дисковод не готов
+        BEQ F.INOUT    РґРёСЃРєРѕРІРѕРґ РЅРµ РіРѕС‚РѕРІ
 
-F.CHK5  LDX RWSLOT     проверка на сигнал WRITE PROTECT
+F.CHK5  LDX RWSLOT     РїСЂРѕРІРµСЂРєР° РЅР° СЃРёРіРЅР°Р» WRITE PROTECT
         LDA $C081,X    --------------------------------
         AND #$20
         BEQ F.ERWP
-        RTS            все в порядке !
+        RTS            РІСЃРµ РІ РїРѕСЂСЏРґРєРµ !
 
-F.ERWP  LDA #<S5       диск защищен
+F.ERWP  LDA #<S5       РґРёСЃРє Р·Р°С‰РёС‰РµРЅ
         LDY #>S5
         LDX #4
         BNE F.ALER     (JMP)
 
-F.INOUT LDX #8         ошибка обмена
+F.INOUT LDX #8         РѕС€РёР±РєР° РѕР±РјРµРЅР°
 F.INOT  LDA #<S1
         LDY #>S1
 
@@ -654,4 +654,5 @@ F.ALER  PHA
         PLA
         JSR DCERR
         JMP DCEXIT
+
 
