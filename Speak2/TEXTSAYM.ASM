@@ -9,6 +9,6 @@ TEXTSAY DFB $8D
         ASC "<SPEAKING DRIVER>"
         DFB $8D,$00
 TXTSAY1 DFB $0D,$0D
-        ASC "Ô–»ﬂ“ÕŒ… –¿¡Œ“€"
+        ASC "√Ø√ê√à√ü√í√ç√é√â √ê√Ä√Å√é√í√õ"
         DFB $21,$00,$00
 
