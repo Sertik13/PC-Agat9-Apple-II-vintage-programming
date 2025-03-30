@@ -1,10 +1,8 @@
 
-
-
 *===============================*
 *                               *
-*    МОДУЛЬ ПРОГРАММИРОВАНИЯ    *
-*   ФУНКЦИОНАЛЬНОЙ КЛАВИАТУРЫ   *
+*    РњРћР”РЈР›Р¬ РџР РћР“Р РђРњРњРР РћР’РђРќРРЇ    *
+*   Р¤РЈРќРљР¦РРћРќРђР›Р¬РќРћР™ РљР›РђР’РРђРўРЈР Р«   *
 * ----------------------------- *
 *  by Serkov S.V. version 1.03  *
 *        - 04.11.95. -          *
@@ -12,7 +10,7 @@
                                 
 
 *----------------*
-* оператор "KEY" *
+* РѕРїРµСЂР°С‚РѕСЂ "KEY" *
 *----------------* 
 
 KEY      DFB 0
@@ -28,7 +26,7 @@ KEY      DFB 0
          STY $5E
          TXA
          CMP #KOLVSIM
-         BCS KEYER130   больше чем кол-во символов
+         BCS KEYER130   Р±РѕР»СЊС€Рµ С‡РµРј РєРѕР»-РІРѕ СЃРёРјРІРѕР»РѕРІ
          PHA
          JSR CH.PARH
          LDY BUF1
@@ -52,7 +50,7 @@ KEY5     LDA ($5E),Y
 KEY6     JSR KBNKON
          PLA
          LDY#KOLVSIM-1
-         STA (BKEYL),Y      записать длину
+         STA (BKEYL),Y      Р·Р°РїРёСЃР°С‚СЊ РґР»РёРЅСѓ
 KEY7     LDA #CONTROLKEY
          STA KEYFLAG
          JMP KBNKOFF
@@ -79,53 +77,53 @@ KEYZ1    DEY
 KEYZ2    RTS
 
 *=======================*     
-*    ЗАПРОС СИМВОЛА     *
+*    Р—РђРџР РћРЎ РЎРРњР’РћР›Рђ     *
 *=======================*
   
-TAKESIM  LDY CH          для стрелки вправо
+TAKESIM  LDY CH          РґР»СЏ СЃС‚СЂРµР»РєРё РІРїСЂР°РІРѕ
          LDA (BASL),Y
          STA $2A
          LDY SIMFLAG
-         BEQ TAKESIM4    отдать из буфера ПФК
-TAKESIM1 JSR $FD14       не мой, взять от KEYIN
+         BEQ TAKESIM4    РѕС‚РґР°С‚СЊ РёР· Р±СѓС„РµСЂР° РџР¤Рљ
+TAKESIM1 JSR $FD14       РЅРµ РјРѕР№, РІР·СЏС‚СЊ РѕС‚ KEYIN
          STA KFUNCOD
          LDY #KOLVKEY-1
-TAKESIM2 CMP TKEYS,Y     сверить с таблицей
+TAKESIM2 CMP TKEYS,Y     СЃРІРµСЂРёС‚СЊ СЃ С‚Р°Р±Р»РёС†РµР№
          BEQ TAKESIM3
          DEY
          BPL TAKESIM2
-         BNE TAKESIM5    нет в таблице
-TAKESIM3 INY             настроиться на адрес клавиши
+         BNE TAKESIM5    РЅРµС‚ РІ С‚Р°Р±Р»РёС†Рµ
+TAKESIM3 INY             РЅР°СЃС‚СЂРѕРёС‚СЊСЃСЏ РЅР° Р°РґСЂРµСЃ РєР»Р°РІРёС€Рё
          JSR KEYZ
          JSR KBNKON
          LDY#KOLVSIM-1
          STY KEYNUM
-         LDA (BKEYL),Y   взять длину этой "клавиши"
+         LDA (BKEYL),Y   РІР·СЏС‚СЊ РґР»РёРЅСѓ СЌС‚РѕР№ "РєР»Р°РІРёС€Рё"
          STA KEYTXT      
          JSR KBNKOFF
          LDA KEYTXT
-         BEQ TAKESIM8    "пустая" клавиша, отдать ее код
+         BEQ TAKESIM8    "РїСѓСЃС‚Р°СЏ" РєР»Р°РІРёС€Р°, РѕС‚РґР°С‚СЊ РµРµ РєРѕРґ
          LDA BKEYH
          LDY BKEYL
-         STA TAKESIM7+2  установить первый символ
+         STA TAKESIM7+2  СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїРµСЂРІС‹Р№ СЃРёРјРІРѕР»
          STY TAKESIM7+1
-TAKESIM4 LDY #0          выдать символ из буфера
+TAKESIM4 LDY #0          РІС‹РґР°С‚СЊ СЃРёРјРІРѕР» РёР· Р±СѓС„РµСЂР°
          JSR KBNKON      
          JSR KEYA
 TAKESIM7 LDA $1000,Y  
-         PHA             код символа передается в A
+         PHA             РєРѕРґ СЃРёРјРІРѕР»Р° РїРµСЂРµРґР°РµС‚СЃСЏ РІ A
          JSR KBNKOFF
          PLA
-         DEC KEYNUM      контроль максимального кол-ва
+         DEC KEYNUM      РєРѕРЅС‚СЂРѕР»СЊ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РєРѕР»-РІР°
          BMI TAKESIM6
-         DEC KEYTXT      контроль по "длине" клавиши
-         BMI TAKESIM6    отдал уже все
-         INC TAKESIM7+1  настроиться на следующий символ
+         DEC KEYTXT      РєРѕРЅС‚СЂРѕР»СЊ РїРѕ "РґР»РёРЅРµ" РєР»Р°РІРёС€Рё
+         BMI TAKESIM6    РѕС‚РґР°Р» СѓР¶Рµ РІСЃРµ
+         INC TAKESIM7+1  РЅР°СЃС‚СЂРѕРёС‚СЊСЃСЏ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СЃРёРјРІРѕР»
          BNE TAKESIM5
          INC TAKESIM7+2  Y=0
 TAKESIM5 STY SIMFLAG     
          RTS
-TAKESIM6 LDY #$FF        следующий символ не из буфера
+TAKESIM6 LDY #$FF        СЃР»РµРґСѓСЋС‰РёР№ СЃРёРјРІРѕР» РЅРµ РёР· Р±СѓС„РµСЂР°
          STY SIMFLAG 
          BNE TAKESIM1    (JMP)
 TAKESIM8 LDA KFUNCOD
@@ -133,10 +131,10 @@ TAKESIM8 LDA KFUNCOD
          BNE TAKESIM5    (JMP)
          
 
-SIMFLAG  DFB $FF     флаг символа
-KEYTXT   DS  1       счетчик символов клавиши
-KEYNUM   DS  1       счетчик максимального кол-ва символов
-KFUNCOD  DS  1       хранит скен-код нажатой клавиши
+SIMFLAG  DFB $FF     С„Р»Р°Рі СЃРёРјРІРѕР»Р°
+KEYTXT   DS  1       СЃС‡РµС‚С‡РёРє СЃРёРјРІРѕР»РѕРІ РєР»Р°РІРёС€Рё
+KEYNUM   DS  1       СЃС‡РµС‚С‡РёРє РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РєРѕР»-РІР° СЃРёРјРІРѕР»РѕРІ
+KFUNCOD  DS  1       С…СЂР°РЅРёС‚ СЃРєРµРЅ-РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєР»Р°РІРёС€Рё
 
 
 TKEYS    DFB $90    f1          1
@@ -157,7 +155,7 @@ TKEYS    DFB $90    f1          1
          
 
 *-------------------*
-* оператор "KEY_ON" *
+* РѕРїРµСЂР°С‚РѕСЂ "KEY_ON" *
 *-------------------*
 
 KEY_ON   DFB 0
@@ -176,7 +174,7 @@ KEY_ON   DFB 0
          JMP KEYL10
 KEY_ON1  JMP BASERR35
 KEY_ON2  LDA #$FF
-         STA SIMFLAG    выключить вывод из буфера
+         STA SIMFLAG    РІС‹РєР»СЋС‡РёС‚СЊ РІС‹РІРѕРґ РёР· Р±СѓС„РµСЂР°
          LDA #<KEYON
          LDY #>KEYON
 
@@ -196,7 +194,7 @@ KEYALL1  LDA (BKEYL),Y
          
 
 *--------------------*
-* оператор "KEY_OFF" *
+* РѕРїРµСЂР°С‚РѕСЂ "KEY_OFF" *
 *--------------------*
 
 KEY_OFF  DFB 0
@@ -236,7 +234,7 @@ KEYX     LDX #$00
          RTS
 
 *---------------------*
-* оператор "KEY_LIST" *
+* РѕРїРµСЂР°С‚РѕСЂ "KEY_LIST" *
 *---------------------*
 
 KEY_LIST DFB 0
@@ -250,37 +248,37 @@ KEY_LIST DFB 0
          STA KEYL6+1
          JSR CHECKNAB
          BNE KEYL10
-KEYL0    LDX#1           X - счетчик клавиш
-         LDY#1           Y - счетчик символов
-         JSR KEYZ        настроиться на начало КН
+KEYL0    LDX#1           X - СЃС‡РµС‚С‡РёРє РєР»Р°РІРёС€
+         LDY#1           Y - СЃС‡РµС‚С‡РёРє СЃРёРјРІРѕР»РѕРІ
+         JSR KEYZ        РЅР°СЃС‚СЂРѕРёС‚СЊСЃСЏ РЅР° РЅР°С‡Р°Р»Рѕ РљРќ
          BEQ KEYL2       Y=0 - JMP
-KEYL1    LDY#2           перейти к следующей клавише
+KEYL1    LDY#2           РїРµСЂРµР№С‚Рё Рє СЃР»РµРґСѓСЋС‰РµР№ РєР»Р°РІРёС€Рµ
          JSR KEYZ1
-KEYL2    TXA             сохранить ее номер
+KEYL2    TXA             СЃРѕС…СЂР°РЅРёС‚СЊ РµРµ РЅРѕРјРµСЂ
          PHA
          JSR KBNKON
          LDY#KOLVSIM-1
-         LDA (BKEYL),Y   взять длину выражения в клавише
+         LDA (BKEYL),Y   РІР·СЏС‚СЊ РґР»РёРЅСѓ РІС‹СЂР°Р¶РµРЅРёСЏ РІ РєР»Р°РІРёС€Рµ
          STA KEYTXT
          JSR KBNKOFF
-         JSR KEYCOL3     установить желтый цвет вывода  
+         JSR KEYCOL3     СѓСЃС‚Р°РЅРѕРІРёС‚СЊ Р¶РµР»С‚С‹Р№ С†РІРµС‚ РІС‹РІРѕРґР°  
          JSR KEYCROUT
-         PLA             номеров клавиш
+         PLA             РЅРѕРјРµСЂРѕРІ РєР»Р°РІРёС€
          PHA
-         JSR DECOZ       пересчитать номер в десятичный
+         JSR DECOZ       РїРµСЂРµСЃС‡РёС‚Р°С‚СЊ РЅРѕРјРµСЂ РІ РґРµСЃСЏС‚РёС‡РЅС‹Р№
          JSR KEYCLREOL
-         LDA DNUMBER+1   вывести номер
+         LDA DNUMBER+1   РІС‹РІРµСЃС‚Рё РЅРѕРјРµСЂ
          JSR KEYPRHEX
 KEYL4    LDA DNUMBER
          JSR KEYPRHEX
-         LDA #$A0        пробел
+         LDA #$A0        РїСЂРѕР±РµР»
          JSR COUT1
          LDA KEYTXT              
-         BEQ KEYL9       "пустая клавиша"
+         BEQ KEYL9       "РїСѓСЃС‚Р°СЏ РєР»Р°РІРёС€Р°"
          LDY#0           
          TYA
 KEYL5    PHA
-         DEC KEYTXT      контроль по длине
+         DEC KEYTXT      РєРѕРЅС‚СЂРѕР»СЊ РїРѕ РґР»РёРЅРµ
          BMI KEYL3
          JSR KBNKON
          JSR KEYA
@@ -290,7 +288,7 @@ KEYL5    PHA
          PLA
          JSR KEYCOL
          BNE KEYL7
-         LDA #$5F        вместо кода NUL (0)
+         LDA #$5F        РІРјРµСЃС‚Рѕ РєРѕРґР° NUL (0)
 KEYL7    JSR COUT2
          PLA
          TAY
@@ -305,7 +303,7 @@ KEYL9    PLA
          INX
          CPX#KOLVKEY+1
          BNE KEYL1
-KEYL6    LDA#$00            храниться цвет
+KEYL6    LDA#$00            С…СЂР°РЅРёС‚СЊСЃСЏ С†РІРµС‚
          STA COLOR
          JSR KEYCROUT
          JMP KEYCROUT
@@ -320,7 +318,7 @@ KEYL11   LDA KEYSOO,X
          INX
          BNE KEYL11  
          
-KEYSOO   ASC "НАБОР ОТСУТСТВУЕТ"
+KEYSOO   ASC "РќРђР‘РћР  РћРўРЎРЈРўРЎРўР’РЈР•Рў"
          DFB $00
          
 CHECKNAB JSR KBNKON
@@ -332,25 +330,25 @@ CHECKNAB JSR KBNKON
          RTS         
 
 KEYCOL   STA KEYCOL6+1
-         CMP #$20      не выводятся COUT
+         CMP #$20      РЅРµ РІС‹РІРѕРґСЏС‚СЃСЏ COUT
          BCC KEYCOL4
-         CMP #$80      управляющие
+         CMP #$80      СѓРїСЂР°РІР»СЏСЋС‰РёРµ
          BCC KEYCOL2
-         CMP #$A0      обычные
+         CMP #$A0      РѕР±С‹С‡РЅС‹Рµ
          BCS KEYCOL2
-KEYCOL1  LDA #$46      инверсный голубой для управляющих
+KEYCOL1  LDA #$46      РёРЅРІРµСЂСЃРЅС‹Р№ РіРѕР»СѓР±РѕР№ РґР»СЏ СѓРїСЂР°РІР»СЏСЋС‰РёС…
          DFB $2C
-KEYCOL2  LDA #$22      зеленый для обычных
+KEYCOL2  LDA #$22      Р·РµР»РµРЅС‹Р№ РґР»СЏ РѕР±С‹С‡РЅС‹С…
          DFB $2C
-KEYCOL3  LDA #$23      желтый для номеров клавиш
+KEYCOL3  LDA #$23      Р¶РµР»С‚С‹Р№ РґР»СЏ РЅРѕРјРµСЂРѕРІ РєР»Р°РІРёС€
          DFB $2C      
-KEYCOL4  LDA #$21      красный для кодов 0<$20
+KEYCOL4  LDA #$21      РєСЂР°СЃРЅС‹Р№ РґР»СЏ РєРѕРґРѕРІ 0<$20
          DFB $2C
-KEYCOL5  LDA #$27      для сообщения
+KEYCOL5  LDA #$27      РґР»СЏ СЃРѕРѕР±С‰РµРЅРёСЏ
          BIT COLOR     
          BMI KEYCOL6
          STA COLOR
-KEYCOL6  LDA #$00      восстановить A
+KEYCOL6  LDA #$00      РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ A
          RTS
             
 KEYPRHEX  AND#$0F
@@ -366,7 +364,7 @@ KEYCOUT1  JMP COUT1
  
 
 *---------------------------*
-* оператор "EXIT" (for KEY) *
+* РѕРїРµСЂР°С‚РѕСЂ "EXIT" (for KEY) *
 *---------------------------*
 
 EXIT     DFB 0
@@ -376,14 +374,14 @@ EXIT     DFB 0
          ASC "KEYEXIT"
          DFB 0
         
-         JSR KEY_OFF1 отключить клавиатуру 
+         JSR KEY_OFF1 РѕС‚РєР»СЋС‡РёС‚СЊ РєР»Р°РІРёР°С‚СѓСЂСѓ 
                                              
-; оператор "EXIT" стандартный
-; для драйверов под систему
+; РѕРїРµСЂР°С‚РѕСЂ "EXIT" СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№
+; РґР»СЏ РґСЂР°Р№РІРµСЂРѕРІ РїРѕРґ СЃРёСЃС‚РµРјСѓ
 ; BASIC 'MASTER'95 23.10.95
 
                               
-;Если драйвер работает с Диспетчером, то выход через него
+;Р•СЃР»Рё РґСЂР°Р№РІРµСЂ СЂР°Р±РѕС‚Р°РµС‚ СЃ Р”РёСЃРїРµС‚С‡РµСЂРѕРј, С‚Рѕ РІС‹С…РѕРґ С‡РµСЂРµР· РЅРµРіРѕ
 
          DO ATRIBDR&:00100000 
 
@@ -392,27 +390,26 @@ EXIT     DFB 0
          JMP INEXIT
 
          FIN
-;Драйвер не работает с Диспетчером- 
-;организовать выход самостоятельно
+;Р”СЂР°Р№РІРµСЂ РЅРµ СЂР°Р±РѕС‚Р°РµС‚ СЃ Р”РёСЃРїРµС‚С‡РµСЂРѕРј- 
+;РѕСЂРіР°РЅРёР·РѕРІР°С‚СЊ РІС‹С…РѕРґ СЃР°РјРѕСЃС‚РѕСЏС‚РµР»СЊРЅРѕ
 
          DO ATRIBDR&:00000100  
 
-         LDA #$FF              если в драйвере есть
-         LDY #$58              процедуры, то занести
-         STA VEKTPROC+2        в вектор процедур
-         STY VEKTPROC+1        JMP на MONRTS
+         LDA #$FF              РµСЃР»Рё РІ РґСЂР°Р№РІРµСЂРµ РµСЃС‚СЊ
+         LDY #$58              РїСЂРѕС†РµРґСѓСЂС‹, С‚Рѕ Р·Р°РЅРµСЃС‚Рё
+         STA VEKTPROC+2        РІ РІРµРєС‚РѕСЂ РїСЂРѕС†РµРґСѓСЂ
+         STY VEKTPROC+1        JMP РЅР° MONRTS
          
          FIN
          
          DO ATRIBDR&:00000010
          
-         LDA #$E1              если в драйвере есть
-         LDY #$AC              функции, то занести
-         STA VEKTFUN+2         в вектор функций
-         STY VEKTFUN+1         JMP на "ОШИБОЧНОЕ ЗНАЧЕНИЕ"
+         LDA #$E1              РµСЃР»Рё РІ РґСЂР°Р№РІРµСЂРµ РµСЃС‚СЊ
+         LDY #$AC              С„СѓРЅРєС†РёРё, С‚Рѕ Р·Р°РЅРµСЃС‚Рё
+         STA VEKTFUN+2         РІ РІРµРєС‚РѕСЂ С„СѓРЅРєС†РёР№
+         STY VEKTFUN+1         JMP РЅР° "РћРЁРР‘РћР§РќРћР• Р—РќРђР§Р•РќРР•"
          
          FIN
 
          RTS
-
 
