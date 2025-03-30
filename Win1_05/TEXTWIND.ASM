@@ -3,7 +3,7 @@
      
 WINTXT     DFB $8D
             
-     ASC "››››››››››››››››››››››››’ "
+     ASC "Ââ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€™ "
      DFB $8D
      ASC "| <C> Friends' software  |"
      DFB $8D
@@ -13,7 +13,7 @@ WINTXT     DFB $8D
      DFB $8D        
      ASC "| used text by Wolkow I. |"
      DFB $8D
-     ASC "››››››››››››››››››››››››Ÿ"
+     ASC "Ââ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºâ€ºÅ¸"
      DFB $8D
      ASC " "
      DFB $8D
