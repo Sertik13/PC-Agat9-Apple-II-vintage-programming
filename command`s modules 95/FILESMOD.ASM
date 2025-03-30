@@ -1,12 +1,11 @@
 
-
 *---------------------------*
-* смешанная команда "FILES" *
+* СЃРјРµС€Р°РЅРЅР°СЏ РєРѕРјР°РЅРґР° "FILES" *
 *---------------------------*
 
-; требует модуля WINMODL2.ASM
-; использует 4-й сегмент ($8000-$9FFF) для подключения
-; банка B (для временного буфера)
+; С‚СЂРµР±СѓРµС‚ РјРѕРґСѓР»СЏ WINMODL2.ASM
+; РёСЃРїРѕР»СЊР·СѓРµС‚ 4-Р№ СЃРµРіРјРµРЅС‚ ($8000-$9FFF) РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ
+; Р±Р°РЅРєР° B (РґР»СЏ РІСЂРµРјРµРЅРЅРѕРіРѕ Р±СѓС„РµСЂР°)
 
 FILES   DFB:10010010
         DW RLINE
@@ -15,36 +14,36 @@ FILES   DFB:10010010
         ASC "FILES (vt,ht,xl,yl,col1,col2,{S,D,ftype})"
         DFB 0
 
-FDBFL   EQU $01   указатель к полю файла
+FDBFL   EQU $01   СѓРєР°Р·Р°С‚РµР»СЊ Рє РїРѕР»СЋ С„Р°Р№Р»Р°
 FDBFH   EQU $02
-FXCUR   EQU $3C   служебные
+FXCUR   EQU $3C   СЃР»СѓР¶РµР±РЅС‹Рµ
 FXCUR1  EQU $3D
 FXCUR2  EQU $3E
 FCALC   EQU $3F
-FYL     EQU $11   размер окна по X 
-FXL     EQU $12   размер окна по Y 
-FXL1    EQU $06   длина печати имени файла
+FYL     EQU $11   СЂР°Р·РјРµСЂ РѕРєРЅР° РїРѕ X 
+FXL     EQU $12   СЂР°Р·РјРµСЂ РѕРєРЅР° РїРѕ Y 
+FXL1    EQU $06   РґР»РёРЅР° РїРµС‡Р°С‚Рё РёРјРµРЅРё С„Р°Р№Р»Р°
 FVTAB   EQU $07
-FILNUM  EQU $08   число считанных полей файлов
-FTXTCOL EQU $09   цвет текста имен
-FRAMCOL EQU $15   цвет меню-рамки
+FILNUM  EQU $08   С‡РёСЃР»Рѕ СЃС‡РёС‚Р°РЅРЅС‹С… РїРѕР»РµР№ С„Р°Р№Р»РѕРІ
+FTXTCOL EQU $09   С†РІРµС‚ С‚РµРєСЃС‚Р° РёРјРµРЅ
+FRAMCOL EQU $15   С†РІРµС‚ РјРµРЅСЋ-СЂР°РјРєРё
 
-FDBUF   EQU $800  буфер для чтения сектора
-FDTRK   EQU $8000 буфер для значения треков
-FDSCT   EQU $8100 -//-  секторов
-FDTYP   EQU $8200 -//- типов файлов
-FDNAL   EQU $8300 буферы хранения адресов имен файлов
+FDBUF   EQU $800  Р±СѓС„РµСЂ РґР»СЏ С‡С‚РµРЅРёСЏ СЃРµРєС‚РѕСЂР°
+FDTRK   EQU $8000 Р±СѓС„РµСЂ РґР»СЏ Р·РЅР°С‡РµРЅРёСЏ С‚СЂРµРєРѕРІ
+FDSCT   EQU $8100 -//-  СЃРµРєС‚РѕСЂРѕРІ
+FDTYP   EQU $8200 -//- С‚РёРїРѕРІ С„Р°Р№Р»РѕРІ
+FDNAL   EQU $8300 Р±СѓС„РµСЂС‹ С…СЂР°РЅРµРЅРёСЏ Р°РґСЂРµСЃРѕРІ РёРјРµРЅ С„Р°Р№Р»РѕРІ
 FDNAH   EQU $8400 (ML/ST)
-FNAMEB  EQU $9000 буфер хранения имен файлов
+FNAMEB  EQU $9000 Р±СѓС„РµСЂ С…СЂР°РЅРµРЅРёСЏ РёРјРµРЅ С„Р°Р№Р»РѕРІ
 
 
-        JSR FPARAM  проверка параметров
+        JSR FPARAM  РїСЂРѕРІРµСЂРєР° РїР°СЂР°РјРµС‚СЂРѕРІ
         LDA $C140
         LDY $C150
         STA FILES3+1
         STY FILES3+4
         STA $C14B
-        JSR FILES4  прочесть каталог и сложить в буферы
+        JSR FILES4  РїСЂРѕС‡РµСЃС‚СЊ РєР°С‚Р°Р»РѕРі Рё СЃР»РѕР¶РёС‚СЊ РІ Р±СѓС„РµСЂС‹
         LDX FILNUM
         BEQ FILES48
 FILES1  DEC FILNUM
@@ -73,15 +72,15 @@ FILES4  LDA #$00
         STA FDBFL
         LDA #<FNAMEB
         STA FDBFH
-        LDA #$11     читать сектор главного VTOC
+        LDA #$11     С‡РёС‚Р°С‚СЊ СЃРµРєС‚РѕСЂ РіР»Р°РІРЅРѕРіРѕ VTOC
         STA RWTREK
         LDA #<FDBUF
         STA RWBUFH
         LDA #>FDBUF
         STA RWBUFL
         JSR FILES6
-FILES5  LDA FDBUF+1  посмотреть ссылку
-        STA RWTREK   каталога
+FILES5  LDA FDBUF+1  РїРѕСЃРјРѕС‚СЂРµС‚СЊ СЃСЃС‹Р»РєСѓ
+        STA RWTREK   РєР°С‚Р°Р»РѕРіР°
         LDA FDBUF+2
         STA RWSECT
         JSR FILES6
@@ -112,8 +111,8 @@ FREADY  LDY #$00
         LSR A
         ORA #$C0
         STA FREADY1+2
-FREADY1 LDA $C60C      если работаем не с TEAKом
-        CMP #TEACID    то готовность не проверять!
+FREADY1 LDA $C60C      РµСЃР»Рё СЂР°Р±РѕС‚Р°РµРј РЅРµ СЃ TEAKРѕРј
+        CMP #TEACID    С‚Рѕ РіРѕС‚РѕРІРЅРѕСЃС‚СЊ РЅРµ РїСЂРѕРІРµСЂСЏС‚СЊ!
         BNE FREADY4
         LDA #$92                              
         STA $C083,X
@@ -125,7 +124,7 @@ FREADY1 LDA $C60C      если работаем не с TEAKом
         STA $C083,X
         LDA #15
         STA $C083,X
-FREADY2 LDA $C081,X    проверка на READY
+FREADY2 LDA $C081,X    РїСЂРѕРІРµСЂРєР° РЅР° READY
         BPL FREADY3
         LDA #$50
         JSR WAIT
@@ -150,8 +149,8 @@ FILEROR JSR FILES3
         JSR DCERR
         JMP DCEXIT
 
-FLERR   DCI "ОШИБКА ОБМЕНА"
-FLERR1  DCI "ФАЙЛ НЕ НАЙДЕН"
+FLERR   DCI "РћРЁРР‘РљРђ РћР‘РњР•РќРђ"
+FLERR1  DCI "Р¤РђР™Р› РќР• РќРђР™Р”Р•Рќ"
 
 FPARAM  JSR CH.PARH
         JSR PR10
@@ -160,14 +159,14 @@ FPARAM  JSR CH.PARH
         LDA COLOR
         PHA
         STA FTXTCOL
-        LDA BUF1+5       цвет меню-рамки
+        LDA BUF1+5       С†РІРµС‚ РјРµРЅСЋ-СЂР°РјРєРё
         JSR PR7
         LDA COLOR
         AND #:11011111
         STA FRAMCOL
         PLA
         STA COLOR
-        LDA BUF1+3       длина окна
+        LDA BUF1+3       РґР»РёРЅР° РѕРєРЅР°
         STA FYL  
         LDA BUF1+2
         TAY
@@ -177,9 +176,9 @@ FPARAM  JSR CH.PARH
         SEC
         SBC#4
         STA FXL
-        LDA BUF1+4       перенести цвет окна
+        LDA BUF1+4       РїРµСЂРµРЅРµСЃС‚Рё С†РІРµС‚ РѕРєРЅР°
         STA BUF1+5
-        LDA #$01         задать тип окна
+        LDA #$01         Р·Р°РґР°С‚СЊ С‚РёРї РѕРєРЅР°
         STA BUF1+4
         LDX XBUF1
         LDA BUF1+6
@@ -225,14 +224,14 @@ FILES8  LDX FXCUR
         LDA FPOZI,X
         TAY 
         LDA FDBUF,Y
-        BEQ FILES7      нет файла
+        BEQ FILES7      РЅРµС‚ С„Р°Р№Р»Р°
         CMP #$FF
-        BEQ FILES11     файл стерт
+        BEQ FILES11     С„Р°Р№Р» СЃС‚РµСЂС‚
         INY
         INY
         TAX
-        LDA XBUF1       выбирать только файлы 
-        CMP #9          данного типа
+        LDA XBUF1       РІС‹Р±РёСЂР°С‚СЊ С‚РѕР»СЊРєРѕ С„Р°Р№Р»С‹ 
+        CMP #9          РґР°РЅРЅРѕРіРѕ С‚РёРїР°
         BCC FILES9 
         LDA FDBUF,Y
         CMP BUF1+8
@@ -242,14 +241,14 @@ FILES8  LDX FXCUR
         BNE FILES15
 FILES9  TXA
         LDX FILNUM
-        STA FDTRK,X     трек файла
+        STA FDTRK,X     С‚СЂРµРє С„Р°Р№Р»Р°
         DEY 
-        LDA FDBUF,Y     сектор файла
+        LDA FDBUF,Y     СЃРµРєС‚РѕСЂ С„Р°Р№Р»Р°
         STA FDSCT,X
         INY 
-        LDA FDBUF,Y     тип
+        LDA FDBUF,Y     С‚РёРї
         STA FDTYP,X
-        LDA FDBFL       адрес имени с$9000 и далее
+        LDA FDBFL       Р°РґСЂРµСЃ РёРјРµРЅРё СЃ$9000 Рё РґР°Р»РµРµ
         STA FDNAL,X
         LDA FDBFH
         STA FDNAH,X
@@ -265,27 +264,27 @@ FILES10 LDA FDBUF,X
 FILES11 BEQ FILES15
 FILES12 LDY #$00
         LDX FXCUR
-        LDA FPZ1NAM,X   имя файла
+        LDA FPZ1NAM,X   РёРјСЏ С„Р°Р№Р»Р°
         TAX 
 FILES13 LDA FDBUF,X
-        STA (FDBFL),Y   сложить на $9000 и далее 
+        STA (FDBFL),Y   СЃР»РѕР¶РёС‚СЊ РЅР° $9000 Рё РґР°Р»РµРµ 
         INY 
         INX 
         CPX FXCUR1
         BCC FILES13
-        LDA #$00        положить 0 в конец имени
+        LDA #$00        РїРѕР»РѕР¶РёС‚СЊ 0 РІ РєРѕРЅРµС† РёРјРµРЅРё
         STA (FDBFL),Y
         INY 
         TYA 
         CLC 
-        ADC FDBFL       изменить 
+        ADC FDBFL       РёР·РјРµРЅРёС‚СЊ 
         STA FDBFL
         BCC FILES14
         INC FDBFH
 FILES14 INC FILNUM
 FILES15 INC FXCUR
         LDA FXCUR
-        CMP #$07        кол-во файлов в секторе
+        CMP #$07        РєРѕР»-РІРѕ С„Р°Р№Р»РѕРІ РІ СЃРµРєС‚РѕСЂРµ
         BCS FILES16
         JMP FILES8
 FILES16 CLC 
@@ -475,4 +474,5 @@ FILES44 LDA FXCUR2
 
 FTYPTBL DFB $00,$01,$02,$04,$08,$10,$20,$7F
 FTPTITL ASC"TIABSRKD"
+
 
