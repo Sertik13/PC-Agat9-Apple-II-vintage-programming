@@ -1,8 +1,6 @@
 
-
-
 *-----------------------------*
-* оператор "ГОВОРЯЩАЯ СТРОКА" *
+* РѕРїРµСЂР°С‚РѕСЂ "Р“РћР’РћР РЇР©РђРЇ РЎРўР РћРљРђ" *
 *-----------------------------*
 
 SAY        DFB:00100000 
@@ -12,13 +10,13 @@ SAY        DFB:00100000
            ASC "SAY A${,Speed,Mod}" 
            DFB 0
 
-; параметры:
+; РїР°СЂР°РјРµС‚СЂС‹:
 ; ----------
 ;
-; A$    - текстовое выражение в формате интерпретатора
-; Speed - скорость проговаривания строки
-; Mod   : 0 - вывод только на динамик и магнитофон
-;         >0 - также и на экран и устройство
+; A$    - С‚РµРєСЃС‚РѕРІРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РІ С„РѕСЂРјР°С‚Рµ РёРЅС‚РµСЂРїСЂРµС‚Р°С‚РѕСЂР°
+; Speed - СЃРєРѕСЂРѕСЃС‚СЊ РїСЂРѕРіРѕРІР°СЂРёРІР°РЅРёСЏ СЃС‚СЂРѕРєРё
+; Mod   : 0 - РІС‹РІРѕРґ С‚РѕР»СЊРєРѕ РЅР° РґРёРЅР°РјРёРє Рё РјР°РіРЅРёС‚РѕС„РѕРЅ
+;         >0 - С‚Р°РєР¶Рµ Рё РЅР° СЌРєСЂР°РЅ Рё СѓСЃС‚СЂРѕР№СЃС‚РІРѕ
 ;      
                                               
 ; USED ZERO PAGE                              
@@ -48,33 +46,33 @@ SDATA   EQU $6B80
         STA SAYH
         STY SAYL
         TXA
-        BEQ SAYERR3    имя нулевое
-        STA SAYSTRL    длина строки
+        BEQ SAYERR3    РёРјСЏ РЅСѓР»РµРІРѕРµ
+        STA SAYSTRL    РґР»РёРЅР° СЃС‚СЂРѕРєРё
 SAY3    JSR CH.PARH
         LDX XBUF1
         CPX#3
-        BCS SAY10      SPEED и MOD указаны
-        LDA#CMOD       установить MOD=CMOD(0)
+        BCS SAY10      SPEED Рё MOD СѓРєР°Р·Р°РЅС‹
+        LDA#CMOD       СѓСЃС‚Р°РЅРѕРІРёС‚СЊ MOD=CMOD(0)
         STA BUF1+2
 SAY10   CPX#2  
         BCC SAY11      
-        LDA BUF1+1     SPEED указан, проверить значение
+        LDA BUF1+1     SPEED СѓРєР°Р·Р°РЅ, РїСЂРѕРІРµСЂРёС‚СЊ Р·РЅР°С‡РµРЅРёРµ
         CMP#CSPEED+1
         BCC SAY12
 SAYERR3 JMP BASERR46  
                   
-SAY11   LDA#CSPEED     SPEED не указан, установить
+SAY11   LDA#CSPEED     SPEED РЅРµ СѓРєР°Р·Р°РЅ, СѓСЃС‚Р°РЅРѕРІРёС‚СЊ
 SAY12   STA SYSPEED    SPEED=CSPEED(8)
 SAY4    LDY#0
         LDA (SAYL),Y
         EOR #$80
         LDX BUF1+2
         BEQ SAY9
-        JSR COUT      вывести на экран и устройство
+        JSR COUT      РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ Рё СѓСЃС‚СЂРѕР№СЃС‚РІРѕ
 SAY9    PHA
         ORA#$80
         JSR SAYVRFY   
-        BCS SAY5      уже отработан (без динамика)
+        BCS SAY5      СѓР¶Рµ РѕС‚СЂР°Р±РѕС‚Р°РЅ (Р±РµР· РґРёРЅР°РјРёРєР°)
         PLA
         AND #$7F
         SEC
@@ -83,13 +81,13 @@ SAY9    PHA
         ASL A
         TAY
         LDX #0
-SAY7    LDA SDATA,Y   начало данных адресов
+SAY7    LDA SDATA,Y   РЅР°С‡Р°Р»Рѕ РґР°РЅРЅС‹С… Р°РґСЂРµСЃРѕРІ
         STA ABEGL,X
         INX
         INY
         CPX#4
         BMI SAY7    
-        JSR SPEAK     вывести символ на динамик и мафон
+        JSR SPEAK     РІС‹РІРµСЃС‚Рё СЃРёРјРІРѕР» РЅР° РґРёРЅР°РјРёРє Рё РјР°С„РѕРЅ
         BEQ SAY8      JMP
 SAY5    PLA      
 SAY8    INC SAYL   
@@ -101,8 +99,8 @@ SAYEND  RTS
       
 SAYSTRL DFB $00
 
-SAYVRFY LDY#5             отсекает символы не русского
-        CMP SVFYTBL,Y     алфавита 
+SAYVRFY LDY#5             РѕС‚СЃРµРєР°РµС‚ СЃРёРјРІРѕР»С‹ РЅРµ СЂСѓСЃСЃРєРѕРіРѕ
+        CMP SVFYTBL,Y     Р°Р»С„Р°РІРёС‚Р° 
         BEQ SAYINT 
         DEY
         BNE SAYVRFY+2
@@ -111,7 +109,7 @@ SAYVRFY LDY#5             отсекает символы не русского
         CLC
         RTS
         
-SAYINT  LDA SYSPEED      интерпретация специальных знаков
+SAYINT  LDA SYSPEED      РёРЅС‚РµСЂРїСЂРµС‚Р°С†РёСЏ СЃРїРµС†РёР°Р»СЊРЅС‹С… Р·РЅР°РєРѕРІ
         ASL A            ("," "." " " "!" ";" "?")
         ASL A
         ASL A
@@ -163,7 +161,7 @@ SPEAK13 TAY
         BEQ SPEAK10
         STX $C030
         STX $C020
-SPEAK10 LDX SYSPEED    взять скорость
+SPEAK10 LDX SYSPEED    РІР·СЏС‚СЊ СЃРєРѕСЂРѕСЃС‚СЊ
 SPEAK11 DEX 
         BNE SPEAK11
         DEY 
@@ -185,6 +183,3 @@ SPEAK9  DEC BYTEND
         STA ABEGH
         JMP SPEAK3
 SPEAK4  RTS 
-
-
-
