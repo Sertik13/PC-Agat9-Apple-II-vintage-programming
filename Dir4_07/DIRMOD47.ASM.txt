@@ -1,4 +1,5 @@
 
+      
          LST OFF   
 *=======================*
 * <C> FRIENDS' SOFTWARE *
@@ -11,26 +12,26 @@
 *=======================*
          LST OFF              
 * 
-* использование ячеек ZERO PAGE
+* РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЏС‡РµРµРє ZERO PAGE
 *
-* $D0-$D1 - обращение к буферу
-*           (буфер $AF00 (DOS не использует))
-* $4E-$4F - RNDL & RNDH (monitor) - в CD\, CD. CD/
-* $C9-$CA - счетчик директорий в &"DIR"
-*           (случайное число для BASICа)
+* $D0-$D1 - РѕР±СЂР°С‰РµРЅРёРµ Рє Р±СѓС„РµСЂСѓ
+*           (Р±СѓС„РµСЂ $AF00 (DOS РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚))
+* $4E-$4F - RNDL & RNDH (monitor) - РІ CD\, CD. CD/
+* $C9-$CA - СЃС‡РµС‚С‡РёРє РґРёСЂРµРєС‚РѕСЂРёР№ РІ &"DIR"
+*           (СЃР»СѓС‡Р°Р№РЅРѕРµ С‡РёСЃР»Рѕ РґР»СЏ BASICР°)
 *
 
-; версия имеет только команды переключения подкаталогов:
+; РІРµСЂСЃРёСЏ РёРјРµРµС‚ С‚РѕР»СЊРєРѕ РєРѕРјР°РЅРґС‹ РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ РїРѕРґРєР°С‚Р°Р»РѕРіРѕРІ:
 ; -------------------------------------------------------
-; &"DIR"{,S,D}          список директорий
-; &"CD\"{,S,D}          включить корневой каталог
-; &"CD."{,S,D}          включить надкаталог
-; &"CD",NAME {,S,D}     включить подкаталог с именем     
-; &"CD?"{,S,D}          выбрать и включить подкаталог
+; &"DIR"{,S,D}          СЃРїРёСЃРѕРє РґРёСЂРµРєС‚РѕСЂРёР№
+; &"CD\"{,S,D}          РІРєР»СЋС‡РёС‚СЊ РєРѕСЂРЅРµРІРѕР№ РєР°С‚Р°Р»РѕРі
+; &"CD."{,S,D}          РІРєР»СЋС‡РёС‚СЊ РЅР°РґРєР°С‚Р°Р»РѕРі
+; &"CD",NAME {,S,D}     РІРєР»СЋС‡РёС‚СЊ РїРѕРґРєР°С‚Р°Р»РѕРі СЃ РёРјРµРЅРµРј     
+; &"CD?"{,S,D}          РІС‹Р±СЂР°С‚СЊ Рё РІРєР»СЋС‡РёС‚СЊ РїРѕРґРєР°С‚Р°Р»РѕРі
 ;
 
-*ТАБЛИЦА МАСОК КОМАНД*
-*позиция:    12345678
+*РўРђР‘Р›РР¦Рђ РњРђРЎРћРљ РљРћРњРђРќР”*
+*РїРѕР·РёС†РёСЏ:    12345678
 
 PDIR     EQU:10000000   1    "DIR"
 PRTDIR   EQU:01000000   2    "CD\"   
@@ -38,14 +39,14 @@ PUPDIR   EQU:00100000   3    "CD."
 PSDIR    EQU:00010000   4    "CD"
 PSDIR1   EQU:00001000   5    "CD?"
 PDDIR    EQU:00000100   6    "ED"   \      
-PDDIR1   EQU:00000010   7    "ED?"  | резерв для 
-PMDIR    EQU:00000001   8    "MD"   | будущих версий
+PDDIR1   EQU:00000010   7    "ED?"  | СЂРµР·РµСЂРІ РґР»СЏ 
+PMDIR    EQU:00000001   8    "MD"   | Р±СѓРґСѓС‰РёС… РІРµСЂСЃРёР№
 PRNDIR   EQU:00000000   9    "RD"   /
 
 
 
 *---------------------------*
-* BЫДATЬ KATAЛOГ ДИPEKTOPИЙ *
+* BР«Р”ATР¬ KATAР›OР“ Р”РPEKTOPРР™ *
 *---------------------------*
 
 DIR      DFB 0
@@ -102,27 +103,27 @@ READVTOC LDA#$11
          STA RWMODE
          RTS
                  
-REPORT   LDA SCALC         подкаталоги были? 
-         BNE REPORT1     если да, то на KOLVSUB
-         LDA DIRFLAG     проверка на приход
-         AND #PSDIR      с команды &"SUBDIR":"NAME"
-         BNE REPORT2     или с &"SUBDIR?" ,если да, то...
+REPORT   LDA SCALC         РїРѕРґРєР°С‚Р°Р»РѕРіРё Р±С‹Р»Рё? 
+         BNE REPORT1     РµСЃР»Рё РґР°, С‚Рѕ РЅР° KOLVSUB
+         LDA DIRFLAG     РїСЂРѕРІРµСЂРєР° РЅР° РїСЂРёС…РѕРґ
+         AND #PSDIR      СЃ РєРѕРјР°РЅРґС‹ &"SUBDIR":"NAME"
+         BNE REPORT2     РёР»Рё СЃ &"SUBDIR?" ,РµСЃР»Рё РґР°, С‚Рѕ...
 REPORT1  JMP KOLVSUB
 
-REPORT2  JSR LOADCV      - введено в версии 4.00
+REPORT2  JSR LOADCV      - РІРІРµРґРµРЅРѕ РІ РІРµСЂСЃРёРё 4.00
          LDA #$03  
          LDX #$06
          JMP DIRERR 
 
-VOLUME   ASC "ДИСК N "       
+VOLUME   ASC "Р”РРЎРљ N "       
 TSO2     ASC "<DIR>"
-TSO3     ASC "ДИРЕКТОРИЙ"
+TSO3     ASC "Р”РР Р•РљРўРћР РР™"
 
 ERR0     DFB $0D,$07,$8D
-ERR1     DCI "ОШИБКА ОБМЕНА"
-ERR2     DCI "ДИСК ЗАЩИЩЕН"           
-ERR3     DCI "ДИРЕКТОРИЯ НЕ НАЙДЕНА"
-ERR4     DCI "ДЛИННОЕ ИМЯ"            введено в верс. 4.0
+ERR1     DCI "РћРЁРР‘РљРђ РћР‘РњР•РќРђ"
+ERR2     DCI "Р”РРЎРљ Р—РђР©РР©Р•Рќ"           
+ERR3     DCI "Р”РР Р•РљРўРћР РРЇ РќР• РќРђР™Р”Р•РќРђ"
+ERR4     DCI "Р”Р›РРќРќРћР• РРњРЇ"            РІРІРµРґРµРЅРѕ РІ РІРµСЂСЃ. 4.0
 ERRMIT   DFB ERR0-ERR0
          DFB ERR1-ERR0
          DFB ERR2-ERR0
@@ -182,19 +183,19 @@ WORK     JSR RWTSGO
          STA STATUS
          LDA RWERR          
          TAY
-         CMP#$04       A<$04 - нормальное завершение
+         CMP#$04       A<$04 - РЅРѕСЂРјР°Р»СЊРЅРѕРµ Р·Р°РІРµСЂС€РµРЅРёРµ
          BCC REFERCE3   
          PLA
          PLA
          TYA
-ERRFLOP  BMI ERORDISK   $80 - сбой ГМД
+ERRFLOP  BMI ERORDISK   $80 - СЃР±РѕР№ Р“РњР”
          ASL A                            
          ASL A       
-         BCS ERORDISK   $40 - сбой при чтении
+         BCS ERORDISK   $40 - СЃР±РѕР№ РїСЂРё С‡С‚РµРЅРёРё
          ASL A
          ASL A    
-         BCS ERORWRIT   $10 - ГМД защищен
-         RTS            иначе  C=0 - нормальное заверш.
+         BCS ERORWRIT   $10 - Р“РњР” Р·Р°С‰РёС‰РµРЅ
+         RTS            РёРЅР°С‡Рµ  C=0 - РЅРѕСЂРјР°Р»СЊРЅРѕРµ Р·Р°РІРµСЂС€.
                                      
                          
 ERORDISK LDA#$01    
@@ -203,11 +204,11 @@ ERORDISK LDA#$01
 ERORWRIT LDA#$02
          LDX#$04
 
-* обработка ошибок при обмене с диском
-* и других ошибок драйвера
+* РѕР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РѕРє РїСЂРё РѕР±РјРµРЅРµ СЃ РґРёСЃРєРѕРј
+* Рё РґСЂСѓРіРёС… РѕС€РёР±РѕРє РґСЂР°Р№РІРµСЂР°
 
-DIRERR   STA RNDH       - сохранить код обработки  
-         STX RNDL       - сохранить код ошибки
+DIRERR   STA RNDH       - СЃРѕС…СЂР°РЅРёС‚СЊ РєРѕРґ РѕР±СЂР°Р±РѕС‚РєРё  
+         STX RNDL       - СЃРѕС…СЂР°РЅРёС‚СЊ РєРѕРґ РѕС€РёР±РєРё
          BIT ERRFLAG
          BMI DIRERR2
 DIRERR1  LDX#0
@@ -230,7 +231,7 @@ DIRERR4  STX DIRERR5+1
          PHA
          ORA#$80
          JSR DRCOUT
-DIRERR5  LDX#$00        - модификация 
+DIRERR5  LDX#$00        - РјРѕРґРёС„РёРєР°С†РёСЏ 
          INX
          PLA
          BPL DIRERR4
@@ -245,8 +246,8 @@ READY    LDY #$00
          LSR A
          ORA #$C0
          STA READY1+2
-READY1   LDA $C60C      если работаем не с TEAKом
-         CMP #TEACID    то готовность не проверять!
+READY1   LDA $C60C      РµСЃР»Рё СЂР°Р±РѕС‚Р°РµРј РЅРµ СЃ TEAKРѕРј
+         CMP #TEACID    С‚Рѕ РіРѕС‚РѕРІРЅРѕСЃС‚СЊ РЅРµ РїСЂРѕРІРµСЂСЏС‚СЊ!
          BNE READY4
          LDA #$92   
          STA $C083,X
@@ -258,7 +259,7 @@ READY1   LDA $C60C      если работаем не с TEAKом
          STA $C083,X
          LDA #15
          STA $C083,X
-READY2   LDA $C081,X     проверка на READY
+READY2   LDA $C081,X     РїСЂРѕРІРµСЂРєР° РЅР° READY
          BPL READY3
          LDA #$50
          JSR WAIT
@@ -276,14 +277,14 @@ SEEKSUB  LDX#$07
          LDY#$0B
          LDA (BUFS),Y 
          BEQ KOLVSUB1 
-         LDY#$0D        2-БАЙТ $FF
+         LDY#$0D        2-Р‘РђР™Рў $FF
 SEEKSUB1 JSR SEEKDEL
          BCS SEEKSUB3
          LDA (BUFS),Y
          CMP#$FF
          BNE SEEKSUB3
-         CPX #$07       ;пpoвepять тoлькo пepвую пoзицию
-         BCC SEEKSUB2   нa ... DIRECTORY
+         CPX #$07       ;РїpoРІepСЏС‚СЊ С‚oР»СЊРєo РїepРІСѓСЋ РїoР·РёС†РёСЋ
+         BCC SEEKSUB2   РЅa ... DIRECTORY
          JSR CHECKDL  
          BCS SEEKSUB3
 SEEKSUB2 JMP IOSABER
@@ -292,7 +293,7 @@ SEEKSUB3 TYA
          ADC#$23
          TAY
          DEC SEEKSUB4+1
-SEEKSUB4 LDX#$00        ;сохранение X, изменено в 3.02 в.
+SEEKSUB4 LDX#$00        ;СЃРѕС…СЂР°РЅРµРЅРёРµ X, РёР·РјРµРЅРµРЅРѕ РІ 3.02 РІ.
          BPL SEEKSUB1
          SEC           
          RTS
@@ -317,8 +318,8 @@ CHECKDL1 PLA
          CLC
          RTS    
                 
-PRDIR    LDA DIRFLAG    проверка прихода с
-         AND #PSDIR     команды &"SUBDIR":" "
+PRDIR    LDA DIRFLAG    РїСЂРѕРІРµСЂРєР° РїСЂРёС…РѕРґР° СЃ
+         AND #PSDIR     РєРѕРјР°РЅРґС‹ &"SUBDIR":" "
          BNE PRDIR3
          JSR DRCLREOL
          LDX#2
@@ -357,9 +358,9 @@ SUPERGO  JMP CHECKN
 IOSABER  INY
          TYA
          PHA
-         LDA DIRFLAG     проверка на приход
-         AND #PSDIR      с команды &"SUBDIR":" "
-         BNE SUPERGO     если да, то ...
+         LDA DIRFLAG     РїСЂРѕРІРµСЂРєР° РЅР° РїСЂРёС…РѕРґ
+         AND #PSDIR      СЃ РєРѕРјР°РЅРґС‹ &"SUBDIR":" "
+         BNE SUPERGO     РµСЃР»Рё РґР°, С‚Рѕ ...
          INC REGKLAV                       
          SED
          LDA SCALC
@@ -371,10 +372,10 @@ IOSABER  INY
          STA SCALC+1
          CLD
          LDA DIRFLAG
-         AND #PSDIR1      проверки на приход с
-         BNE IOSABER2     команд &"SUBDIR?"      
+         AND #PSDIR1      РїСЂРѕРІРµСЂРєРё РЅР° РїСЂРёС…РѕРґ СЃ
+         BNE IOSABER2     РєРѕРјР°РЅРґ &"SUBDIR?"      
          LDA REGKLAV
-IOSABER1 CMP#$00          ; сравнение с длиной окна
+IOSABER1 CMP#$00          ; СЃСЂР°РІРЅРµРЅРёРµ СЃ РґР»РёРЅРѕР№ РѕРєРЅР°
          BCC IOSABER2
          LDA#$03
          STA CURSOR  
@@ -409,7 +410,7 @@ IOSABER4 PLA
 REGKLAV  DS 1       
              
              
-*------- Y - начало имени      
+*------- Y - РЅР°С‡Р°Р»Рѕ РёРјРµРЅРё      
          
 CLIP     LDA RGW
          SEC
@@ -420,7 +421,7 @@ CLIP     LDA RGW
 CLIP0    SEC
          SBC#1
          STA BCLIP
-CLIP1    LDX#$00             введено в верс. 4.02
+CLIP1    LDX#$00             РІРІРµРґРµРЅРѕ РІ РІРµСЂСЃ. 4.02
 CLIP2    LDA (BUFS),Y
          JSR DRCOUT
          INY
@@ -433,9 +434,9 @@ CLIP3    RTS
 
 BCLIP    DS 1
 
-KOLVSUB  LDA DIRFLAG      проверка на приход 
-         AND #PSDIR1      с команды &"SUBDIR?"
-         BNE JMPCEN       если да, то...
+KOLVSUB  LDA DIRFLAG      РїСЂРѕРІРµСЂРєР° РЅР° РїСЂРёС…РѕРґ 
+         AND #PSDIR1      СЃ РєРѕРјР°РЅРґС‹ &"SUBDIR?"
+         BNE JMPCEN       РµСЃР»Рё РґР°, С‚Рѕ...
          JSR DRCLREOL
          JSR DRCROUT
          LDX#00
@@ -460,7 +461,7 @@ JMPCEN   JSR DRCLREOL
          JMP SELECT0
 
 *--------------------------*
-* BЫЙTИ B KOPHEBOЙ KATAЛOГ *
+* BР«Р™TР B KOPHEBOР™ KATAР›OР“ *
 *--------------------------*
 
 CDROOT   DFB 0
@@ -520,7 +521,7 @@ BUFFSC   DS 1
 
  
 *--------------------*
-* ВЫЙТИ В НАДКАТАЛОГ *
+* Р’Р«Р™РўР Р’ РќРђР”РљРђРўРђР›РћР“ *
 *--------------------*
 
 CDUP     DFB 0
@@ -538,7 +539,7 @@ CDUP     DFB 0
          JMP CDROOT1
 
 *--------------------*
-* ВЫЙТИ В ПОДКАТАЛОГ *
+* Р’Р«Р™РўР Р’ РџРћР”РљРђРўРђР›РћР“ *
 *--------------------*
 
 CDSUB    DFB:00100000
@@ -584,7 +585,7 @@ CHECKN1  LDA (BUFS),Y
 CHECKN3  JMP IOSABER4
          
 *------------------------------*
-* ВЫЙТИ В ПОДКАТАЛОГ С ВЫБОРОМ *
+* Р’Р«Р™РўР Р’ РџРћР”РљРђРўРђР›РћР“ РЎ Р’Р«Р‘РћР РћРњ *
 *------------------------------*
 
 CDSUBSEL DFB 0
@@ -670,7 +671,7 @@ DIRFLAG  DFB $00
 
 
 *---------------------------*
-* оператор "EXIT" для "DIR" *
+* РѕРїРµСЂР°С‚РѕСЂ "EXIT" РґР»СЏ "DIR" *
 *---------------------------*
 
 EXIT     DFB:00000000
@@ -689,39 +690,39 @@ EXIT1    LDA#<AREA
          ELSE
 
 EXIT3    LDA #$FF     
-         LDY #$58       поставить $FF58 (JMP на RTS)
-         STA VEKTPROC+2 в вектор процедур
-         STY VEKTPROC+1 (вектор функций не менялся)
+         LDY #$58       РїРѕСЃС‚Р°РІРёС‚СЊ $FF58 (JMP РЅР° RTS)
+         STA VEKTPROC+2 РІ РІРµРєС‚РѕСЂ РїСЂРѕС†РµРґСѓСЂ
+         STY VEKTPROC+1 (РІРµРєС‚РѕСЂ С„СѓРЅРєС†РёР№ РЅРµ РјРµРЅСЏР»СЃСЏ)
          RTS
              
          FIN
 
 ; - -----------------------\
-; - Служебные подпрограммы  >
+; - РЎР»СѓР¶РµР±РЅС‹Рµ РїРѕРґРїСЂРѕРіСЂР°РјРјС‹  >
 ; - -----------------------/
        
-; TAKENAME берет текст до 30 знаков и ,S,D обращаясь
-; к подпрограмме TAKEPAR
+; TAKENAME Р±РµСЂРµС‚ С‚РµРєСЃС‚ РґРѕ 30 Р·РЅР°РєРѕРІ Рё ,S,D РѕР±СЂР°С‰Р°СЏСЃСЊ
+; Рє РїРѕРґРїСЂРѕРіСЂР°РјРјРµ TAKEPAR
 
 TAKENAME LDA#0
          JSR RPARAM
          CPX#30
-         BCS TAKES5     имя больше 30 знаков
+         BCS TAKES5     РёРјСЏ Р±РѕР»СЊС€Рµ 30 Р·РЅР°РєРѕРІ
          STA $5F
          STY $5E
          LDY #0
-TAKENM1  LDA ($5E),Y    взять N-ый символ имени начиная
-         EOR #$80       с первого после ","
+TAKENM1  LDA ($5E),Y    РІР·СЏС‚СЊ N-С‹Р№ СЃРёРјРІРѕР» РёРјРµРЅРё РЅР°С‡РёРЅР°СЏ
+         EOR #$80       СЃ РїРµСЂРІРѕРіРѕ РїРѕСЃР»Рµ ","
          STA BUFNAME,Y
          INY
          DEX
          BNE TAKENM1
          BEQ TAKENM2
 
-TAKES4   LDX#46        ош.значение
+TAKES4   LDX#46        РѕС€.Р·РЅР°С‡РµРЅРёРµ
          JMP BASERR  
          
-TAKES5   PLA           длинное имя 
+TAKES5   PLA           РґР»РёРЅРЅРѕРµ РёРјСЏ 
          PLA
          LDA#4
          LDX#2   
@@ -729,7 +730,7 @@ TAKES5   PLA           длинное имя
 
 BUFNAME  EQU $800
 
-TAKENM2  LDA#$A0        дополнить имя пробелами
+TAKENM2  LDA#$A0        РґРѕРїРѕР»РЅРёС‚СЊ РёРјСЏ РїСЂРѕР±РµР»Р°РјРё
 TAKENM3  STA BUFNAME,Y
          INY
          CPY #30
@@ -739,9 +740,9 @@ TAKEPAR  JSR CH.PARH
          JSR PARBIT
          BCC TAKEP3
          DEC XBUF1
-         LDX#1          после NAME  (3 параметра)  |
+         LDX#1          РїРѕСЃР»Рµ NAME  (3 РїР°СЂР°РјРµС‚СЂР°)  |
          DFB $2C                                   |MAX
-TAKEP3   LDX#0          только числа (2 параметра) |
+TAKEP3   LDX#0          С‚РѕР»СЊРєРѕ С‡РёСЃР»Р° (2 РїР°СЂР°РјРµС‚СЂР°) |
          LDY XBUF1
          LDA BUF1,X
          CPY#1         
@@ -769,5 +770,4 @@ TAKEP1   INX
          STA DEFDRV
          STA RWDRV
 TAKEP2   RTS
-
 
