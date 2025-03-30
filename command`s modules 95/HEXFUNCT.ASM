@@ -1,12 +1,10 @@
 
-
-
 *------------------*
-* ôóíêöèÿ "HEX$"(n)*
+* функция "HEX$"(n)*
 *------------------*
 
-; ïðåîáðàçóåò àðãóìåíò n â äèàïàçîíå 0-65535
-; â øåñòíàäöàòèðè÷íóþ òåêñòîâóþ ñòðîêó
+; преобразует аргумент n в диапазоне 0-65535
+; в шестнадцатиричную текстовую строку
 
 
 HEX      DFB:10010000
@@ -19,28 +17,28 @@ HEX      DFB:10010000
 BUFHEX   EQU $06
 HEXS     EQU $2A
 
-         LDA BUF1         ïðåîáðàçîâàòü àðãóìåíò
-         JSR TREOR        èç áóôåðà
-         STA BUFHEX+3     ìëàäøèé
+         LDA BUF1         преобразовать аргумент
+         JSR TREOR        из буфера
+         STA BUFHEX+3     младший
          STY BUFHEX+2
-         LDA BUF11        ñòàðøèé
+         LDA BUF11        старший
          JSR TREOR
          STA BUFHEX+1
          STY BUFHEX
-         LDX#4            óáðàòü ëèäèðóþùèå íóëè
+         LDX#4            убрать лидирующие нули
          LDY#0            ----------------------
-HEXC     LDA BUFHEX,Y     X-ñ÷åò÷èê öèôð
-         CMP#$30          ýòî íîëü?
+HEXC     LDA BUFHEX,Y     X-счетчик цифр
+         CMP#$30          это ноль?
          BNE HEXRET
-         DEX              äà, ïðîïóñòèòü
+         DEX              да, пропустить
          INY
          CPY#4
          BNE HEXC
          DEY
-         INX              íîëü òîæå öèôðà!
+         INX              ноль тоже цифра!
 HEXRET   TYA
-         STA HEXS         âåðíóòü ïàðàìåòð îáðàáîò÷èêó
-         LDA#>BUFHEX      ôóíêöèé
+         STA HEXS         вернуть параметр обработчику
+         LDA#>BUFHEX      функций
          CLC
          ADC HEXS
          TAY
@@ -71,4 +69,3 @@ TRBYTE   ORA#$B0
          BCC TREND
          ADC#6
 TREND    RTS
-
